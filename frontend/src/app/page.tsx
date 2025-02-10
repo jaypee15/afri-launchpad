@@ -28,25 +28,25 @@ const startups = [
 
 export default function Home() {
   return (
-    <div className="container py-6">
-      <div className="flex flex-col items-center justify-center space-y-4 text-center">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">
+    <div className="flex flex-col items-center">
+      <div className="max-w-3xl w-full text-center mb-12">
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl mb-6">
           Discover Africa's Next Big Startups
         </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
+        <p className="text-lg text-muted-foreground">
           Be the first to know about innovative African startups before they launch.
           Follow their journey and get early access to their products.
         </p>
       </div>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {startups.map((startup) => (
-          <Card key={startup.id}>
+          <Card key={startup.id} className="flex flex-col">
             <CardHeader>
               <CardTitle>{startup.name}</CardTitle>
               <CardDescription>{startup.sector}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1">
               <p>{startup.pitch}</p>
             </CardContent>
             <CardFooter className="flex justify-between">

@@ -5,7 +5,7 @@ import { generateOTP, sendVerificationEmail } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
-    const { email, password, name } = await req.json();
+    const { email, password, firstName, lastName } = await req.json();
 
     const client = await clientPromise;
     const db = client.db();
@@ -28,7 +28,9 @@ export async function POST(req: Request) {
     await usersCollection.insertOne({
       email,
       password: hashedPassword,
-      name,
+      firstName,
+      lastName,
+      name: `${firstName} ${lastName}`, // Keep full name for display purposes
       emailVerified: false,
       otp,
       otpExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
@@ -38,7 +40,7 @@ export async function POST(req: Request) {
         bio: "",
         location: "",
         interests: [],
-        avatar: "",
+        avatar: ""
       }
     });
 

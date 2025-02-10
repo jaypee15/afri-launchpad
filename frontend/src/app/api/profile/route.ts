@@ -2,78 +2,61 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import clientPromise from "@/lib/mongodb";
 import { authOptions } from "@/lib/auth";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const client = await clientPromise;
     const db = client.db();
-    const user = await db.collection("users").findOne(
-      { email: session.user.email },
-      { projection: { password: 0, otp: 0, otpExpires: 0 } }
+    const profile = await db.collection("users").findOne(
+      { _id: new ObjectId(session.user.id) },
+      { projection: { password: 0 } }
     );
 
-    if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+    if (!profile) {
+      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ profile: user });
+    return NextResponse.json({ profile });
   } catch (error) {
-    console.error("Profile fetch error:", error);
+    console.error("Error in GET /api/profile:", error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { profile } = await req.json();
+    const { profile } = await request.json();
     const client = await clientPromise;
     const db = client.db();
 
-    await db.collection("users").updateOne(
-      { email: session.user.email },
-      {
-        $set: {
-          name: profile.name,
-          profile: {
-            bio: profile.bio,
-            location: profile.location,
-            interests: profile.interests,
-            avatar: profile.avatar
-          },
-          updatedAt: new Date()
-        }
-      }
+    const result = await db.collection("users").updateOne(
+      { _id: new ObjectId(session.user.id) },
+      { $set: profile }
     );
 
-    return NextResponse.json({ 
-      message: "Profile updated successfully" 
-    });
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Profile update error:", error);
+    console.error("Error in PUT /api/profile:", error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

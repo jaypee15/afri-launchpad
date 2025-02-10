@@ -50,6 +50,16 @@ export function MainNav() {
             <>
               <Button
                 variant="ghost"
+                asChild
+                className={cn(
+                  "transition-colors hover:text-foreground/80",
+                  pathname === "/profile" ? "text-foreground" : "text-foreground/60"
+                )}
+              >
+                <Link href="/profile">Profile</Link>
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => signOut()}
               >
                 Sign Out
