@@ -49,15 +49,12 @@ export class SecretsService extends ConfigService {
 
   get authAwsSecret() {
     return {
-      AWS_REGION: this.get('AWS_REGION', 'eu-west-2'),
-      AWS_ACCESS_KEY_ID: this.get('AWS_ACCESS_KEY_ID', 'AKIA36G3JG4TMYVGM6G2'),
+      AWS_REGION: this.get('AWS_REGION'),
+      AWS_ACCESS_KEY_ID: this.get('AWS_ACCESS_KEY_ID'),
       AWS_SECRET_ACCESS_KEY: this.get(
-        'AWS_SECRET_ACCESS_KEY',
-        'MpCF0V/iTyyg2fucHYbzEmLTEk+s9mc6H6L6KhV5',
-      ),
+        'AWS_SECRET_ACCESS_KEY'),
       AWS_S3_BUCKET_NAME: this.get(
         'AWS_S3_BUCKET_NAME',
-        'darey-io-nonprod-general-revamp',
       ),
     };
   }
@@ -65,13 +62,11 @@ export class SecretsService extends ConfigService {
   get stripeSecret() {
     return {
       STRIPE_SECRET_KEY: this.get(
-        'STRIPE_SECRET_KEY',
-        'sk_test_51N5GHWKFeR2UZ0pfnaHBElXYLMa6ksKfwhs62zaRr1lSiPBAPhNvAGrCGMqfniam5kBg7NLAlYt7qNUmRvZjuvgb00xZgcx3p7',
+        'STRIPE_SECRET_KEY'
       ),
-      STRIPE_API_VERSION: this.get('STRIPE_API_VERSION', '2022-11-15'),
+      STRIPE_API_VERSION: this.get('STRIPE_API_VERSION'),
       STRIPE_WEBHOOK_SECRET: this.get(
-        'STRIPE_WEBHOOK_SECRET',
-        'whsec_v4l6TLGryvpTYNmoXA1zRGXr5rC3SfMk',
+        'STRIPE_WEBHOOK_SECRET'
       ),
     };
   }
