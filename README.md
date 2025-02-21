@@ -54,7 +54,7 @@ Develop a minimal pre-launch discovery platform for African startups, featuring:
       3. **Waitlist Setup**: Configure a “Notify on Launch” feature to collect emails.
       4. **Preview & Confirm**: Review the profile before publishing.
 
-### Backend
+### Backend/server
 
 - **Framework**: NestJS with TypeScript.
   - **Benefits**: Structured, scalable, and modular architecture.
